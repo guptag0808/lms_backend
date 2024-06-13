@@ -1,5 +1,4 @@
-const { models } = require('../models');
-const Course = models.Course;
+const Course = require('../models/Course');
 
 exports.getCourses = async (req, res) => {
   try {
