@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { models } = require('../models');
-const User = models.User;
+require('dotenv').config()
+
 
 exports.authenticate = (req, res, next) => {
   const token = req.header('Authorization').replace('Bearer ', '');
@@ -8,7 +8,7 @@ exports.authenticate = (req, res, next) => {
     return res.status(401).json({ error: 'Access denied. No token provided.' });
   }
   try {
-    const decoded = jwt.verify(token, 'Login_secret_key');
+    const decoded = jwt.verify(token,process.env.Secret_Key);
     req.user = decoded;
 	console.log(req.user)
     next();
@@ -20,7 +20,7 @@ exports.authenticate = (req, res, next) => {
 exports.authorize = (roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ error: 'Forbidden' });
+      return res.status(403).json({ error: 'You Are Not Authorize' });
     }
     next();
   };

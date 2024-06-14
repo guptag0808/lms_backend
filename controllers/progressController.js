@@ -1,28 +1,33 @@
-const { models } = require('../models');
-const Progress = models.Progress;
+const{ Progress,Course,User} = require('../models/index');
 
-exports.getProgress = async (req, res) => {
+
+
+exports.getUserProgress = async (req, res) => {
   const { id } = req.params;
   try {
-    const progress = await Progress.findAll({ where: { userId: id } });
-    res.json(progress);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+    const progress = await Progress.findAll({
+      where: { userId: id },
+    });
 
-exports.updateProgress = async (req, res) => {
-  const { id } = req.params;
-  const { courseId, completed } = req.body;
-  try {
-    const progress = await Progress.findOne({ where: { userId: id, courseId } });
     if (!progress) {
-      return res.status(404).json({ error: 'Progress not found' });
+      return res.status(404).json({ message: 'No progress found for this user.' });
     }
-    progress.completed = completed;
-    await progress.save();
-    res.json(progress);
+
+    res.status(200).json(progress);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: 'Error retrieving progress.', error });
+  }
+}
+exports.updateUserProgress = async (req, res) => {
+  const { id } = req.params;
+  const { courseId, enroll, status } = req.body;
+
+  try {
+     const newProgress = await Progress.create({ userId:id, courseId, enroll, status });
+     newProgress.save()
+     res.status(201).json({message:newProgress})
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating progress.', error });
   }
 };

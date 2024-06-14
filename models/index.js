@@ -1,28 +1,15 @@
-const { Sequelize } = require('sequelize');
-const config = require('../config/config.json').development;
+const User = require('./User')
+const Course =require("./Course")
+const Progress = require("./Progress");
+const Lesson = require('./Lesson');
 
-const sequelize = new Sequelize(config.database, config.username, config.password, {
-  host: config.host,
-  dialect: config.dialect
-});
 
-const Course = require('./Course')(sequelize, Sequelize);
 
-const User = require('./User')(sequelize, Sequelize);
-const Lesson = require('./Lesson')(sequelize, Sequelize);
-const Progress = require('./Progress')(sequelize, Sequelize);
 
-// Define relationships
-Course.hasMany(Lesson, { as: 'lessons' });
-Lesson.belongsTo(Course);
+Progress.belongsTo(User, { foreignKey: 'userId' });
+Progress.belongsTo(Course, { foreignKey: 'courseId' });
 
-User.belongsToMany(Course, { through: Progress });
-Course.belongsToMany(User, { through: Progress });
 
-module.exports = sequelize;
-module.exports.models = {
-  User,
-  Course,
-  Lesson,
-  Progress
-};
+module.exports= {
+	User,Course,Lesson,Progress
+}

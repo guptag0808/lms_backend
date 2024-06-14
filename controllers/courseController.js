@@ -1,4 +1,4 @@
-const Course = require('../models/Course');
+const {Course} = require('../models/index');
 
 exports.getCourses = async (req, res) => {
   try {
