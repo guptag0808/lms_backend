@@ -75,10 +75,10 @@ POST /register: Register a new user (student or teacher)
 }
 ```
 ## Course Management
-### GET /: Retrieve a list of all courses (Authenticated users)
-### GET /:id: Retrieve details of a specific course (Authenticated users)
-### POST /: Create a new course (Teachers only)
-### DELETE /:id: Delete a course (Teachers only)
+### GET courses/: Retrieve a list of all courses (Authenticated users)
+### GET courses/:id: Retrieve details of a specific course (Authenticated users)
+### POST courses/: Create a new course (Teachers only)
+### DELETE courses/:id: Delete a course (Teachers only)
 ```
 {
   "title": "string",
